@@ -23,14 +23,15 @@ install_kubie() {
   chmod +x $bin_path
 }
 
-get_arch() {
-  uname | tr '[:upper:]' '[:lower:]'
-}
-
 get_download_url() {
   local version="$1"
-  local platform="$(get_arch)"
-  echo "https://github.com/iul1an/kubie/releases/download/v${version}/kubie-${platform}-amd64"
+  local platform="$(uname | tr '[:upper:]' '[:lower:]')"
+  local arch
+  case "$(uname -m)" in
+    "arm64") arch="arm64";;
+    "x86_64") arch="amd64";;
+  esac
+  echo "https://github.com/iul1an/kubie/releases/download/v${version}/kubie-${platform}-${arch}"
 }
 
 install_kubie $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
